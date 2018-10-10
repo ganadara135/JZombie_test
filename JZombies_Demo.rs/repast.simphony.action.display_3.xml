@@ -1,5 +1,5 @@
 <repast.simphony.visualization.engine.CartesianDisplayDescriptor simphonyVersion="2.5.0">
-  <name>Space Display</name>
+  <name>stori display</name>
   <type>2D</type>
   <styles>
     <entry>
@@ -18,27 +18,27 @@
   <editedStyles>
     <entry>
       <string>jzombies.StoriBoard</string>
-      <string>jzombies.StoriBoard.style_0.xml</string>
+      <string>jzombies.StoriBoard.style_1.xml</string>
     </entry>
     <entry>
       <string>jzombies.Zombie</string>
-      <string>jzombies.Zombie.style_3.xml</string>
+      <string>jzombies.Zombie.style_0.xml</string>
     </entry>
     <entry>
       <string>jzombies.Human</string>
-      <string>jzombies.Human.style_3.xml</string>
+      <string>jzombies.Human.style_0.xml</string>
     </entry>
   </editedStyles>
   <netStyles>
     <entry>
-      <string>infection network</string>
-      <string>repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D</string>
+      <string>staking network</string>
+      <string>repast.simphony.visualization.editedStyle.EditedEdgeStyle2D</string>
     </entry>
   </netStyles>
   <editedNetStyles>
     <entry>
-      <string>infection network</string>
-      <null/>
+      <string>staking network</string>
+      <string>stakingnetwork.style_0.xml</string>
     </entry>
   </editedNetStyles>
   <frequency>ON_MOVE</frequency>
@@ -49,7 +49,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1149055266</hashCode>
+    <hashCode>1714939625</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -75,7 +75,12 @@
       <type>continuous space</type>
     </repast.simphony.scenario.data.ProjectionData>
     <repast.simphony.scenario.data.ProjectionData>
-      <id>infection network</id>
+      <id>grid</id>
+      <attributes/>
+      <type>grid</type>
+    </repast.simphony.scenario.data.ProjectionData>
+    <repast.simphony.scenario.data.ProjectionData>
+      <id>staking network</id>
       <attributes/>
       <type>network</type>
     </repast.simphony.scenario.data.ProjectionData>
@@ -85,11 +90,36 @@
   </visualizationProperties>
   <projectionDescriptors>
     <entry>
-      <string>infection network</string>
+      <string>staking network</string>
       <repast.simphony.visualization.engine.DefaultProjectionDescriptor>
-        <proj reference="../../../../projections/repast.simphony.scenario.data.ProjectionData[2]"/>
+        <proj reference="../../../../projections/repast.simphony.scenario.data.ProjectionData[3]"/>
         <props/>
       </repast.simphony.visualization.engine.DefaultProjectionDescriptor>
+    </entry>
+    <entry>
+      <string>grid</string>
+      <repast.simphony.visualization.grid.GridProjectionDescriptor>
+        <proj reference="../../../../projections/repast.simphony.scenario.data.ProjectionData[2]"/>
+        <props>
+          <entry>
+            <string>repast.simphony.visualization.grid.GridDecorator</string>
+            <map>
+              <entry>
+                <string>COLOR</string>
+                <int>-16777216</int>
+              </entry>
+              <entry>
+                <string>UNIT_SIZE</string>
+                <float>15.0</float>
+              </entry>
+              <entry>
+                <string>SHOW</string>
+                <boolean>true</boolean>
+              </entry>
+            </map>
+          </entry>
+        </props>
+      </repast.simphony.visualization.grid.GridProjectionDescriptor>
     </entry>
     <entry>
       <string>space</string>
@@ -101,7 +131,7 @@
             <map>
               <entry>
                 <string>COLOR</string>
-                <int>-16777216</int>
+                <int>-13369549</int>
               </entry>
               <entry>
                 <string>UNIT_SIZE</string>

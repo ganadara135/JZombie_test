@@ -10,7 +10,7 @@ public class StoriBoard {
 
 	private ContinuousSpace<Object> space;
 	private Grid<Object> grid;
-	//public List storiList;
+	
 	String storiName;
 
 	public StoriBoard (ContinuousSpace<Object> space, Grid<Object> grid, String name) {

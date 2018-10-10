@@ -3,6 +3,7 @@
  */
 package jzombies;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.context.Context;
@@ -31,15 +32,20 @@ public class Human {
 	private Grid<Object> grid;
 	private int energy, startingEnergy;
 //	public StoriBoard storiBoard;
-	String ownStoriBoardName;
+	public List<Object> storiboardList;
+//	String ownStoriBoardName;
+	private int countNumber;
+	
 
-	public Human(ContinuousSpace<Object> space, Grid<Object> grid, int energy) {
+	public Human(ContinuousSpace<Object> space, Grid<Object> grid, int energy, int count) {
 		this.space = space;
 		this.grid = grid;
 		this.energy = startingEnergy = energy;
-		this.ownStoriBoardName = "";	// isEmpty() works after setting this ""
+//		this.ownStoriBoardName = "";	// isEmpty() works after setting this ""
+		this.storiboardList  = new ArrayList<Object>();
+		this.countNumber = count;		
 	}
-
+ 
 	@Watch(watcheeClassName = "jzombies.Zombie", watcheeFieldNames = "moved", 
 			query = "within_vn 1", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void run() {
@@ -47,49 +53,47 @@ public class Human {
 		GridPoint pt = grid.getLocation(this);
 
 		// use the GridCellNgh class to create GridCells for the surrounding neighborhood.
-		GridCellNgh<Zombie> nghCreator = new GridCellNgh<Zombie>(grid, pt,Zombie.class, 1, 1);
-		List<GridCell<Zombie>> gridCells = nghCreator.getNeighborhood(true);
+		GridCellNgh<StoriBoard> nghCreator = new GridCellNgh<StoriBoard>(grid, pt,StoriBoard.class, 1, 1);
+		List<GridCell<StoriBoard>> gridCells = nghCreator.getNeighborhood(true);
 		SimUtilities.shuffle(gridCells, RandomHelper.getUniform());
 
-		GridPoint pointWithLeastZombies = null;
+		GridPoint pointWithLeastStoriboard = null;
 		int minCount = Integer.MAX_VALUE;
-		for (GridCell<Zombie> cell : gridCells) {
+		for (GridCell<StoriBoard> cell : gridCells) {
 			if (cell.size() < minCount) {
-				pointWithLeastZombies = cell.getPoint();
+				pointWithLeastStoriboard = cell.getPoint();
 				minCount = cell.size();
 			}
 		}
 		
-
-		
-		if (energy > 0) {
-			moveTowards(pointWithLeastZombies);
+        if (energy > 0) {
+        	// Max number of storiBoard = 3 and energy level >= 7 can make storiboard
+        	if(energy > 7 && storiboardList.size() < 3) {
+				Context<Object> context = ContextUtils.getContext(this);
+				NdPoint spacePt = space.getLocation(this);
+				GridPoint ptBoard = grid.getLocation(this);
+				
+				//this.ownStoriBoardName = "스토리네임";
+				String tempstr = "스토리"+storiboardList.size();
+				System.out.println("tempstr : "+ tempstr);
+				StoriBoard storiB = new StoriBoard(space, grid, tempstr);
+				storiboardList.add(storiB);
+				context.add(storiB);
+				space.moveTo(storiB, spacePt.getX(), spacePt.getY());
+				grid.moveTo(storiB, ptBoard.getX(), ptBoard.getY());
+				Network<Object> net = (Network<Object>)context.getProjection("staking network");
+				net.addEdge(this, storiB);
+				
+				
+        	}
+			moveTowards(pointWithLeastStoriboard);
 			
 		} else {
-			energy = startingEnergy;	
+			//energy = startingEnergy;
+			energy = RandomHelper.nextIntFromTo(4, 10);
+			System.out.println("random energy : " + energy);
 		}
-		
-		System.out.println("check : " + this.ownStoriBoardName.isEmpty());
-		
-		// StoriBoard 생성하는 부분
-		if(this.ownStoriBoardName.isEmpty()) {
-			Context<Object> context = ContextUtils.getContext(this);
-			NdPoint spacePt = space.getLocation(this);
-			GridPoint ptBoard = grid.getLocation(this);
-			
-			this.ownStoriBoardName = "스토리네임";
-			StoriBoard storiB = new StoriBoard(space, grid, this.ownStoriBoardName);
-			context.add(storiB);
-			System.out.println("111");
-			space.moveTo(storiB, spacePt.getX(), spacePt.getY());
-			System.out.println("222");
-			grid.moveTo(storiB, ptBoard.getX(), ptBoard.getY());
-			System.out.println("333");
-			Network<Object> net = (Network<Object>)context.getProjection("infection network");
-			System.out.println("444");
-			net.addEdge(this, storiB);
-			System.out.println("555");
-		}
+        System.out.println("check energy : " + energy);
 	}
 	
 	public void moveTowards(GridPoint pt) {
@@ -102,10 +106,6 @@ public class Human {
 			myPoint = space.getLocation(this);
 			grid.moveTo(this, (int)myPoint.getX(), (int)myPoint.getY());
 			energy--;
-			
-
-	
 		}
 	}
-
 }

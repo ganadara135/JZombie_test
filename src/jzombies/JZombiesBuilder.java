@@ -31,29 +31,29 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	public Context build(Context<Object> context) {
 		context.setId("storiContext");
 
-		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("infection network", context, true);
+		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("staking network", context, true);
 		netBuilder.buildNetwork();
 
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace(
 				"space", context, new RandomCartesianAdder<Object>(),
-				new repast.simphony.space.continuous.WrapAroundBorders(), 100,100);
+				new repast.simphony.space.continuous.WrapAroundBorders(), 50,50);
 
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
 		Grid<Object> grid = gridFactory.createGrid("grid", context,
 				new GridBuilderParameters<Object>(new WrapAroundBorders(),
-						new SimpleGridAdder<Object>(), true, 100, 100));
+						new SimpleGridAdder<Object>(), true, 50, 50));
 
 		Parameters params = RunEnvironment.getInstance().getParameters();
 		int zombieCount = (Integer) params.getValue("zombie_count");
 		for (int i = 0; i < zombieCount; i++) {
-			context.add(new Zombie(space, grid));
+			context.add(new Zombie(space, grid, i));
 		}
 
 		int humanCount = (Integer) params.getValue("human_count");
 		for (int i = 0; i < humanCount; i++) {
 			int energy = RandomHelper.nextIntFromTo(4, 10);
-			context.add(new Human(space, grid, energy));
+			context.add(new Human(space, grid, energy, i));
 		}
 		
 		// Grid 에  넣는 부분
@@ -66,7 +66,7 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 			RunEnvironment.getInstance().endAt(20);
 		}
 
-		System.out.println("check Print Console on Contet Build");
+		System.out.println("check Print Console on Context Build");
 		
 		return context;
 	}
