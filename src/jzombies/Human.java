@@ -46,14 +46,14 @@ public class Human {
 		this.countNumber = count;		
 	}
  
-	@Watch(watcheeClassName = "jzombies.Zombie", watcheeFieldNames = "moved", 
-			query = "within_vn 1", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	@Watch(watcheeClassName = "jzombies.Zombie", watcheeFieldNames = "moved", query = "within_vn 10", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void run() {
 		// get the grid location of this Human
 		GridPoint pt = grid.getLocation(this);
 
 		// use the GridCellNgh class to create GridCells for the surrounding neighborhood.
-		GridCellNgh<StoriBoard> nghCreator = new GridCellNgh<StoriBoard>(grid, pt,StoriBoard.class, 1, 1);
+		GridCellNgh<StoriBoard> nghCreator = new GridCellNgh<StoriBoard>(grid, pt,StoriBoard.class, 1, 3);
+		//GridCellNgh<StoriBoard> nghCreator = new GridCellNgh<StoriBoard>(grid, pt,StoriBoard.class, 1, 1);
 		List<GridCell<StoriBoard>> gridCells = nghCreator.getNeighborhood(true);
 		SimUtilities.shuffle(gridCells, RandomHelper.getUniform());
 
@@ -82,8 +82,7 @@ public class Human {
 				space.moveTo(storiB, spacePt.getX(), spacePt.getY());
 				grid.moveTo(storiB, ptBoard.getX(), ptBoard.getY());
 				Network<Object> net = (Network<Object>)context.getProjection("staking network");
-				net.addEdge(this, storiB);
-				
+				net.addEdge(this, storiB);				
 				
         	}
 			moveTowards(pointWithLeastStoriboard);

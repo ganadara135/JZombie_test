@@ -14,10 +14,14 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.continuous.RandomCartesianAdder;
+import repast.simphony.space.graph.Network;
+import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridBuilderParameters;
+import repast.simphony.space.grid.GridPoint;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.WrapAroundBorders;
+import repast.simphony.util.ContextUtils;
 
 public class JZombiesBuilder implements ContextBuilder<Object> {
 
@@ -30,6 +34,7 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId("storiContext");
+		
 
 		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("staking network", context, true);
 		netBuilder.buildNetwork();
@@ -65,8 +70,26 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 		if (RunEnvironment.getInstance().isBatch()) {
 			RunEnvironment.getInstance().endAt(20);
 		}
+		
+		// 초기에 스토리 1개 생성해 놓음
+		
+
+		String tempstr = "제네시스 스토리";
+		System.out.println("tempstr : "+ tempstr);
+		StoriBoard storiB = new StoriBoard(space, grid, tempstr);
+		context.add(storiB);
+		space.moveTo(storiB, 1, 1);
+		grid.moveTo(storiB, 1, 1);
+		Network<Object> net = (Network<Object>)context.getProjection("staking network");
+		net.addEdge(storiB, storiB);
 
 		System.out.println("check Print Console on Context Build");
+		System.out.println("check context name : " + context.toString());
+		
+		System.out.println("check total collections : " + context.size());		
+		System.out.println("check total human collections : " + context.getObjects(Human.class).size());
+		System.out.println("check total zombi collections : " + context.getObjects(Zombie.class).size());
+		
 		
 		return context;
 	}
