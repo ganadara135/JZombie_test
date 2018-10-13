@@ -78,8 +78,8 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 		System.out.println("tempstr : "+ tempstr);
 		StoriBoard storiB = new StoriBoard(space, grid, tempstr);
 		context.add(storiB);
-		space.moveTo(storiB, 1, 1);
-		grid.moveTo(storiB, 1, 1);
+		space.moveTo(storiB, 0, 0);
+		grid.moveTo(storiB, 0, 0);
 		Network<Object> net = (Network<Object>)context.getProjection("staking network");
 		net.addEdge(storiB, storiB);
 
