@@ -31,6 +31,8 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	 * @see
 	 * repast.simphony.dataLoader.ContextBuilder#build(repast.simphony.context.Context)
 	 */
+	public int maxStoriLimit;
+	
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId("storiContext");
@@ -50,18 +52,22 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 						new SimpleGridAdder<Object>(), true, 50, 50));
 
 		Parameters params = RunEnvironment.getInstance().getParameters();
-		int zombieCount = (Integer) params.getValue("zombie_count");
-		for (int i = 0; i < zombieCount; i++) {
-			context.add(new Zombie(space, grid, i));
+		maxStoriLimit = (Integer) params.getValue("max_stori");
+		int initialZombieCount = (Integer) params.getValue("zombie_count");		
+		for (int i = 0; i < initialZombieCount; i++) {
+			int randomCoin = RandomHelper.nextIntFromTo(1, 10);
+			//System.out.println("randomCoin : " + randomCoin);
+			context.add(new Zombie(space, grid, i, randomCoin));
 		}
 
-		int humanCount = (Integer) params.getValue("human_count");
-		for (int i = 0; i < humanCount; i++) {
+		int initialHumanCount = (Integer) params.getValue("human_count");
+		
+		for (int i = 0; i < initialHumanCount; i++) {
 			int energy = RandomHelper.nextIntFromTo(4, 10);
-			context.add(new Human(space, grid, energy, i));
+			context.add(new Human(space, grid, energy, i, maxStoriLimit));
 		}
 		
-		// Grid 에  넣는 부분
+		// 모든 Obj을  space 에  넣는 부분
 		for (Object obj : context) {
 			NdPoint pt = space.getLocation(obj);
 			grid.moveTo(obj, (int) pt.getX(), (int) pt.getY());
@@ -71,9 +77,8 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 			RunEnvironment.getInstance().endAt(20);
 		}
 		
-		// 초기에 스토리 1개 생성해 놓음
 		
-
+		// 초기에 스토리 1개 생성해 놓음
 		String tempstr = "제네시스 스토리";
 		System.out.println("tempstr : "+ tempstr);
 		StoriBoard storiB = new StoriBoard(space, grid, tempstr);

@@ -17,17 +17,24 @@
   <methodDataSources class="linked-hash-map"/>
   <countSources class="linked-hash-map">
     <entry>
-      <string>Human Count</string>
+      <string>SPi count</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>jzombies.Human</typeName>
-        <id>Human Count</id>
+        <id>SPi count</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
     <entry>
-      <string>Zombie Count</string>
+      <string>PD count</string>
       <repast.simphony.data2.engine.CountSourceDefinition>
         <typeName>jzombies.Zombie</typeName>
-        <id>Zombie Count</id>
+        <id>PD count</id>
+      </repast.simphony.data2.engine.CountSourceDefinition>
+    </entry>
+    <entry>
+      <string>Stori count</string>
+      <repast.simphony.data2.engine.CountSourceDefinition>
+        <typeName>jzombies.StoriBoard</typeName>
+        <id>Stori count</id>
       </repast.simphony.data2.engine.CountSourceDefinition>
     </entry>
   </countSources>

@@ -6,11 +6,10 @@ package jzombies;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.lang.Math;
-
-
 import repast.simphony.context.Context;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.query.space.grid.GridCell;
 import repast.simphony.query.space.grid.GridCellNgh;
 import repast.simphony.random.RandomHelper;
@@ -23,6 +22,7 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
 import repast.simphony.util.collections.IndexedIterable;
+import repast.simphony.valueLayer.GridValueLayer;
 
 /**
  * @author kcod
@@ -36,26 +36,46 @@ public class Zombie {
 	private boolean moved;
 	private int countNum;
 	private int coinAsset;
-	public ArrayList<Object> recordOfmoving;
+//	private int stakingAsset;
+	//public ArrayList<Object> recordOfmoving;
 	public int intervalStep;
 	public StoriBoard intervalStori = null;
 	GridPoint pointWithMostStoriBoard = null;
+	//public JZombiesBuilder globalEnv;
+	int maxStoriLimit;
+
 	
 
-	public Zombie(ContinuousSpace<Object> space, Grid<Object> grid, int count) {
+	public Zombie(ContinuousSpace<Object> space, Grid<Object> grid, int count, int coin) {
 		this.space = space;
 		this.grid = grid;
 		this.countNum = count;
-		recordOfmoving = new ArrayList<Object>();
+		//recordOfmoving = new ArrayList<Object>();
 		intervalStep = 0;
+		this.coinAsset = coin;
+		 
+		
+		Parameters params = RunEnvironment.getInstance().getParameters();
+		maxStoriLimit = (Integer) params.getValue("max_stori");
 	}
 
 	@ScheduledMethod(start = 1, interval = 1)
 	public void step() {
 		
 		
-		System.out.println("intervalStep " + intervalStep);
-
+		
+		if( !checkMaxLimitStaking() ) {
+			System.out.println("스테이킹할 돈이 없습니다.");
+			
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return;
+		}
 		
 		if(intervalStep == 0){		
 		
@@ -71,31 +91,42 @@ public class Zombie {
 			
 			IndexedIterable<Object> storiIter  = contextTmp.getObjects(StoriBoard.class);
 			//System.out.println("Storiboard Count : " + storiIter.size());
-			System.out.println(this);
-			System.out.println("투자자 죄표 : " + pt);
+			//System.out.println(this);
+	//		System.out.println("투자자 죄표 : " + pt);
 			
 			//Context<Object> context = ContextUtils.getContext(obj);
 			Network<Object> net = (Network<Object>)contextTmp.getProjection("staking network");
 			
 			StoriBoard storiTmp = null;	
 			
-			ListIterator<Object> litr = recordOfmoving.listIterator();
-			
 			
 			
 			System.out.println("스토리갯수 : " + storiIter.size());
-			if(storiIter.size() > 3) { // 최소 3개 이상의 스토리가 만들어지면 이 방식으로 투자자 움직임
+			
+			if(storiIter.size() > 19 && storiIter.size() <= 20) {				
+			
+				for (int n=0; n < storiIter.size(); n++) {
+					System.out.println(" text : "+ ((StoriBoard)storiIter.get(n)).pi.getTotalStaking());
+				}
+			}
+			
+			
+			if(storiIter.size() > 3) { // 전체적으로 최소 3개 이상의 스토리가 만들어지면 이 방식으로 투자자 움직임
 				//System.out.println("투자자 X 위치 : " + pt.getX());
 				//System.out.println("투자자 Y 위치 : " + pt.getY());
 				
 				//int distanceSPD = pt.getX() + pt.getY();
-				int distanceMin = 50; //Grid 범위 최대값
-				int distanceTmp = 0;
+				//int distanceMin = 50; //Grid 범위 최대값
+				//int distanceTmp = 0;
 				//투자자와 스토리가 가장 가까운 곳으로 이동한다. 대신 스토리는 넷엣지가 없어야 함.
 				//GridPoint storiTmp = null;
-				do { // 엣지가 이미 연결되어 있으면 해당 스토리는 건너뜀
+//				do { // 엣지가 이미 연결되어 있으면 해당 스토리는 건너뜀
+//					storiTmp = (StoriBoard) storiIter.get(RandomHelper.nextIntFromTo(0, storiIter.size()-1));
+//				}while(net.isAdjacent(this, storiTmp));
+				storiTmp = (StoriBoard) storiIter.get(RandomHelper.nextIntFromTo(0, storiIter.size()-1));
+				for(int y=0; (y < 10 && net.isAdjacent(this, storiTmp)); y++) {
 					storiTmp = (StoriBoard) storiIter.get(RandomHelper.nextIntFromTo(0, storiIter.size()-1));
-				}while(net.isAdjacent(this, storiTmp));
+				}
 				
 				pointWithMostStoriBoard = grid.getLocation(storiTmp);
 				intervalStori = storiTmp;
@@ -139,14 +170,13 @@ public class Zombie {
 		}
 		// 스토리보드가 몰려 있는 곳으로 움직인다.
 		moveTowards(pointWithMostStoriBoard);
-		//infect();
 		staking();
 		
 		intervalStep--;
 	}
 
 	public void moveTowards(GridPoint pt) {
-		System.out.println("Storiboard 좌표 : " + pt);
+		//System.out.println("Storiboard 좌표 : " + pt);
 		if(pt != null) {
 			// only move if we are not already in this grid location
 			if (!pt.equals(grid.getLocation(this))) {
@@ -157,15 +187,7 @@ public class Zombie {
 				space.moveByVector(this, 1, angle, 0);
 				myPoint = space.getLocation(this);
 				grid.moveTo(this, (int) myPoint.getX(), (int) myPoint.getY());
-				System.out.println("투자자 move 좌표 " + grid.getLocation(this));
-/*				// 투자자 이동 위치 기록
-				recordOfmoving.add(recordOfmoving.size(),grid.getLocation(this));
-				
-				if(recordOfmoving.size() > 10) {
-					recordOfmoving.remove((recordOfmoving.size()-10));
-					recordOfmoving.trimToSize();
-				}
-	*/			
+
 				// watchFieldName by Human run(), I think that false allocation is auto??
 				moved = true;
 			}
@@ -177,45 +199,59 @@ public class Zombie {
 	public void staking() {
 		GridPoint pt = grid.getLocation(this);
 		List<Object> storiBoardListTmp = new ArrayList<Object>();
-		//System.out.println("storiBoardListTmp.size() : "+storiBoardListTmp.size());
 		
+		// 같은 위치에 스토리가 있으면
 		for (Object obj : grid.getObjectsAt(pt.getX(), pt.getY())) {
 			if (obj instanceof StoriBoard) {
 				storiBoardListTmp.add(obj);
 			}
 		}
 		
+		//System.out.println("storiBoardListTmp.size() : "+storiBoardListTmp.size());
 		if (storiBoardListTmp.size() > 0) {
 			// If there are plural stories, only pick one story by random
 			int index = RandomHelper.nextIntFromTo(0, storiBoardListTmp.size() - 1);
 			//System.out.println("index : "+index);
 			
-			Object obj = storiBoardListTmp.get(index);
+			StoriBoard obj = (StoriBoard)storiBoardListTmp.get(index);
 			//System.out.println("obj : " + obj.toString());
 			NdPoint spacePt = space.getLocation(obj);
 			Context<Object> context = ContextUtils.getContext(obj);
 			//context.remove(obj);
 			Network<Object> net = (Network<Object>)context.getProjection("staking network");
 			
+//			GridValueLayer resourceLayer = (GridValueLayer)context..getValueLayer("StoriBoard");
+
+//			resourceLayer.set(resource, grid.getLocation(this).getX(), grid.getLocation(this).getY());
+			//context.getAgentLayer(StoriBoard.class);
 			//System.out.println("equals : " + net.equals((StoriBoard)obj));		
 			//System.out.println("net.getName() : " + net.getName());		
 			
 		//	System.out.println("net.getDegree(obj) : " + net.getDegree(obj));
-			System.out.println("net.isAdjacent(this, obj) : " + net.isAdjacent(this, obj));
+		//	System.out.println("net.isAdjacent(this, obj) : " + net.isAdjacent(this, obj));
 			
-			if(net.isAdjacent(this, obj)) {
-				System.out.println("already staking");
-			}else {
-				net.addEdge(this,obj);
-			}
-			
-			//Zombie zombie = new Zombie(space, grid);
-			//context.add(zombie);
-			//space.moveTo(zombie, spacePt.getX(), spacePt.getY());
-			//grid.moveTo(zombie, pt.getX(), pt.getY());
-			
-			//Network<Object> net = (Network<Object>)context.getProjection("infection network");
-			//net.addEdge(this, zombie);
+			//int tmp = this.coinAsset-1;
+			//System.out.println("tmp : " + tmp);
+			if(this.coinAsset > 0) {
+				this.coinAsset -= 1;			
+				obj.pi.doStaking(this.coinAsset);
+				if(net.isAdjacent(this, obj)) {
+					System.out.println("already staking");
+					
+				}else {
+					net.addEdge(this,obj);
+					System.out.println("Title : " + obj.getTitle());									
+				}
+				System.out.println("Staking Asset : " + obj.pi.getTotalStaking());
+			}			
 		}
+	}
+	
+	public boolean checkMaxLimitStaking() {
+		//System.out.println("투자자 자산 : " + this.coinAsset);
+		if(this.coinAsset > 0) {
+			return true;
+		}
+		return false;	
 	}
 }
