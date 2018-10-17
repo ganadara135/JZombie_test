@@ -29,6 +29,7 @@ public class StoriBoard {
 		return this.storiTitle;
 	}
 	
+	// Need to make Chart on Ω««‡√¢
 	public int getTotalStaking() {
 		return pi.getTotalStaking();
 	}

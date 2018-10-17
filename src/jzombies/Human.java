@@ -8,6 +8,7 @@ import java.util.List;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
 import repast.simphony.engine.watcher.WatcherTriggerSchedule;
 import repast.simphony.parameter.Parameters;
@@ -32,7 +33,7 @@ public class Human {
 	
 	private ContinuousSpace<Object> space;
 	private Grid<Object> grid;
-	private int energy, startingEnergy;
+	private int energy;//, startingEnergy;
 //	public StoriBoard storiBoard;
 //	String ownStoriBoardName;
 	private int countNumber;
@@ -43,7 +44,7 @@ public class Human {
 	public Human(ContinuousSpace<Object> space, Grid<Object> grid, int energy, int count, int maxStori) {
 		this.space = space;
 		this.grid = grid;
-		this.energy = startingEnergy = energy;
+		this.energy = energy;
 //		this.ownStoriBoardName = "";	// isEmpty() works after setting this ""
 		this.storiboardList  = new ArrayList<Object>();
 		this.countNumber = count;
@@ -58,12 +59,11 @@ public class Human {
 		this.energy = ener;
 	}
  
+
 	@Watch(watcheeClassName = "jzombies.Zombie", watcheeFieldNames = "moved", query = "within_vn 5", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
-	public void run() {
-		
-		
+	public void run() {	
 		//this.wait();
-		
+						
 		// get the grid location of this Human
 		GridPoint pt = grid.getLocation(this);
 
@@ -110,7 +110,8 @@ public class Human {
    //     System.out.println("check energy : " + energy);
         //Parameters params = RunEnvironment.getInstance().getParameters();
         //System.out.println("param check : " + (Integer) params.getValue("human_count"));
-	}
+	}	
+	
 	
 	public void moveTowards(GridPoint pt) {
 		// only move if we are not already in this grid location

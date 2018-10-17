@@ -32,11 +32,15 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	 * repast.simphony.dataLoader.ContextBuilder#build(repast.simphony.context.Context)
 	 */
 	public int maxStoriLimit;
+	public static int saledToken;
+	//public static int movedRange;
 	
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId("storiContext");
 		
+		saledToken = 0;
+		//movedRange = 5;
 
 		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("staking network", context, true);
 		netBuilder.buildNetwork();
@@ -53,10 +57,15 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 
 		Parameters params = RunEnvironment.getInstance().getParameters();
 		maxStoriLimit = (Integer) params.getValue("max_stori");
-		int initialZombieCount = (Integer) params.getValue("zombie_count");		
+		int initialZombieCount = (Integer) params.getValue("zombie_count");
+		saledToken = (Integer) params.getValue("saled_token");
+		int randomCoin = 0;
 		for (int i = 0; i < initialZombieCount; i++) {
-			int randomCoin = RandomHelper.nextIntFromTo(1, 10);
-			//System.out.println("randomCoin : " + randomCoin);
+			randomCoin = RandomHelper.nextIntFromTo(1, 10);
+			saledToken -= randomCoin;
+			if(saledToken < 0) {
+				saledToken = randomCoin = 0;				
+			}				
 			context.add(new Zombie(space, grid, i, randomCoin));
 		}
 

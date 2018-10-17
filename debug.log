@@ -356,3 +356,83 @@ Caused by: java.lang.NoSuchMethodException: jzombies.Human. N/A ()
 	at java.lang.Class.getMethod(Unknown Source)
 	at repast.simphony.data2.MethodDataSource.<init>(MethodDataSource.java:43)
 	... 51 more
+FATAL [Thread-7] 2018-10-17 22:10:01,496 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (4.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jzombies.Zombie$$FastClassByCGLIB$$6141f31.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.ClassCastException: java.util.LinkedHashSet cannot be cast to com.lowagie.text.pdf.hyphenation.TernaryTree$Iterator
+	at jzombies.Zombie.staking(Zombie.java:219)
+	at jzombies.Zombie.step(Zombie.java:150)
+	... 10 more
+FATAL [Thread-7] 2018-10-17 22:11:53,434 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (14.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jzombies.Zombie$$FastClassByCGLIB$$6141f31.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.ClassCastException: java.lang.Class cannot be cast to jzombies.Human
+	at jzombies.Zombie.staking(Zombie.java:223)
+	at jzombies.Zombie.step(Zombie.java:150)
+	... 10 more
+FATAL [Thread-7] 2018-10-17 22:19:28,794 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (5.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jzombies.Zombie$$FastClassByCGLIB$$6141f31.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.ClassCastException: java.util.LinkedHashMap$LinkedKeyIterator cannot be cast to jzombies.Human
+	at jzombies.Zombie.staking(Zombie.java:221)
+	at jzombies.Zombie.step(Zombie.java:150)
+	... 10 more
+FATAL [Thread-7] 2018-10-18 00:18:28,274 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (10.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jzombies.Zombie$$FastClassByCGLIB$$6141f31.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.ClassCastException: jzombies.Zombie cannot be cast to jzombies.Human
+	at jzombies.Zombie.staking(Zombie.java:226)
+	at jzombies.Zombie.step(Zombie.java:150)
+	... 10 more

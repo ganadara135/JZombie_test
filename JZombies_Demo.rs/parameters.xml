@@ -17,5 +17,9 @@
 			defaultValue="3" 
 			isReadOnly="false" 
 			converter="repast.simphony.parameter.StringConverterFactory$IntConverter"/>
+	<parameter name="saled_token" displayName="saled token" type="int" 
+			defaultValue="100" 
+			isReadOnly="false" 
+			converter="repast.simphony.parameter.StringConverterFactory$IntConverter"/>
 
 </parameters>
