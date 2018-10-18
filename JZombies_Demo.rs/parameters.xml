@@ -4,12 +4,11 @@
 			defaultValue="__NULL__"
 			isReadOnly="false" 
 		    converter="repast.simphony.parameter.StringConverterFactory$IntConverter"/>
-	<parameter name="human_count" displayName="Human Count" type="int" 
+	<parameter name="human_count" displayName="Writor Count" type="int" 
 			defaultValue="200" 
 			isReadOnly="false" 
 			converter="repast.simphony.parameter.StringConverterFactory$IntConverter"/>
-			
-	<parameter name="zombie_count" displayName="Zombie Count" type="int" 
+	<parameter name="zombie_count" displayName="Investor Count" type="int" 
 			defaultValue="5" 
 			isReadOnly="false" 
 			converter="repast.simphony.parameter.StringConverterFactory$IntConverter"/>

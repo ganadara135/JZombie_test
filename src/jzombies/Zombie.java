@@ -60,7 +60,7 @@ public class Zombie {
 		int randomCoin = 0;
 		
 		if( !checkMaxLimitStaking() ) {
-			System.out.println("스테이킹할 돈이 없습니다.");
+//			System.out.println("스테이킹할 돈이 없습니다.");
 			
 			try {
 				Thread.sleep(300);
@@ -103,12 +103,12 @@ public class Zombie {
 			
 			
 			
-			System.out.println("스토리갯수 : " + storiIter.size());
+//			System.out.println("스토리갯수 : " + storiIter.size());
 			
 			if(storiIter.size() > 19 && storiIter.size() <= 20) {				
 			
 				for (int n=0; n < storiIter.size(); n++) {
-					System.out.println(" text : "+ ((StoriBoard)storiIter.get(n)).pi.getTotalStaking());
+//					System.out.println(" text : "+ ((StoriBoard)storiIter.get(n)).pi.getTotalStaking());
 				}
 			}
 			
@@ -205,16 +205,14 @@ public class Zombie {
 				this.coinAsset -= 1;			
 				obj.pi.doStaking(1);
 				
-				System.out.println("obj 이름  first  : " + obj);
+				//System.out.println("obj 이름  first  : " + obj);
 				if(net.isAdjacent(this, obj)) {
-					System.out.println("already staking");
-					
+					System.out.println("already staking");					
 				}else {
-					net.addEdge(this,obj);
-					
-					System.out.println("Title : " + obj.getTitle());									
+					net.addEdge(this,obj);					
+					//System.out.println("Title : " + obj.getTitle());									
 				}
-				System.out.println("obj 이름 net : " + net.getAdjacent(obj));   
+				//System.out.println("obj 이름 net : " + net.getAdjacent(obj));   
 				Iterable<Object> iterNet = net.getAdjacent(obj);
 		
 				for(Object cell : iterNet) {
@@ -228,7 +226,7 @@ public class Zombie {
 					}						
 				}
 							
-				System.out.println("Staking Asset : " + obj.pi.getTotalStaking());
+//				System.out.println("Staking Asset : " + obj.pi.getTotalStaking());
 			}			
 		}
 	}

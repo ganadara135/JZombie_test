@@ -14,6 +14,7 @@ public class StoriBoard {
 	public int storiNum;
 	public RewardPi pi;
 	String storiTitle;
+	public int growthIndex;
 
 	public StoriBoard (ContinuousSpace<Object> space, Grid<Object> grid, String title) {
 		this.space = space;
@@ -22,7 +23,7 @@ public class StoriBoard {
 		//this.storiList = new List(storiName);
 		this.pi = new RewardPi();
 		this.storiTitle = title;
-		//System.out.println(this.storiTitle);
+		growthIndex = 0;
 	}
 	
 	public String getTitle() {

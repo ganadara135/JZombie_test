@@ -9,6 +9,7 @@ import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.schedule.Schedule;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -33,7 +34,8 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	 */
 	public int maxStoriLimit;
 	public static int saledToken;
-	//public static int movedRange;
+	GrowthEval growth;
+	Schedule schedule;
 	
 	@Override
 	public Context build(Context<Object> context) {
@@ -103,7 +105,16 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 		System.out.println("check total collections : " + context.size());		
 		System.out.println("check total human collections : " + context.getObjects(Human.class).size());
 		System.out.println("check total zombi collections : " + context.getObjects(Zombie.class).size());
+
 		
+		/*
+		growth = new GrowthEval();		
+		schedule = new Schedule();		
+		System.out.println(schedule.schedule(growth));
+		schedule.execute();
+		*/
+		// 이렇게 해야 Scheduler 에 포함되고, Annotation 조건에 따라서 실행딤
+		context.add(new GrowthEval());
 		
 		return context;
 	}
