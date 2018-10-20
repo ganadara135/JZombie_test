@@ -50,7 +50,7 @@ public class Human {
 		this.countNumber = count;
 		this.maxStoriLimit = maxStori;
 	}
-	
+
 	public int getEnergy() {
 		return energy;
 	}
@@ -105,7 +105,7 @@ public class Human {
 		} else {
 			//energy = startingEnergy;
 			energy = RandomHelper.nextIntFromTo(4, 10);
-			System.out.println("random energy : " + energy);
+			//System.out.println("random energy : " + energy);
 		}
    //     System.out.println("check energy : " + energy);
         //Parameters params = RunEnvironment.getInstance().getParameters();

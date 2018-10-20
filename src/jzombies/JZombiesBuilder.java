@@ -32,16 +32,16 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 	 * @see
 	 * repast.simphony.dataLoader.ContextBuilder#build(repast.simphony.context.Context)
 	 */
-	public int maxStoriLimit;
-	public static int saledToken;
+	public static int initialMaxStoriLimit;
+	public static int LiquidToken;
 	GrowthEval growth;
-	Schedule schedule;
+//	Schedule schedule;
 	
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId("storiContext");
 		
-		saledToken = 0;
+		LiquidToken = 0;
 		//movedRange = 5;
 
 		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("staking network", context, true);
@@ -58,15 +58,15 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 						new SimpleGridAdder<Object>(), true, 50, 50));
 
 		Parameters params = RunEnvironment.getInstance().getParameters();
-		maxStoriLimit = (Integer) params.getValue("max_stori");
+		initialMaxStoriLimit = (Integer) params.getValue("max_stori");
 		int initialZombieCount = (Integer) params.getValue("zombie_count");
-		saledToken = (Integer) params.getValue("saled_token");
+		LiquidToken = (Integer) params.getValue("saled_token");
 		int randomCoin = 0;
 		for (int i = 0; i < initialZombieCount; i++) {
 			randomCoin = RandomHelper.nextIntFromTo(1, 10);
-			saledToken -= randomCoin;
-			if(saledToken < 0) {
-				saledToken = randomCoin = 0;				
+			LiquidToken -= randomCoin;
+			if(LiquidToken < 0) {
+				LiquidToken = randomCoin = 0;				
 			}				
 			context.add(new Zombie(space, grid, i, randomCoin));
 		}
@@ -75,7 +75,7 @@ public class JZombiesBuilder implements ContextBuilder<Object> {
 		
 		for (int i = 0; i < initialHumanCount; i++) {
 			int energy = RandomHelper.nextIntFromTo(4, 10);
-			context.add(new Human(space, grid, energy, i, maxStoriLimit));
+			context.add(new Human(space, grid, energy, i, initialMaxStoriLimit));
 		}
 		
 		// 모든 Obj을  space 에  넣는 부분

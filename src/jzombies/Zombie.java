@@ -40,7 +40,7 @@ public class Zombie {
 	public StoriBoard intervalStori = null;
 	GridPoint pointWithMostStoriBoard = null;
 	//public JZombiesBuilder globalEnv;
-	int maxStoriLimit;
+//	int maxStoriLimit;
 
 	public Zombie(ContinuousSpace<Object> space, Grid<Object> grid, int count, int coin) {
 		this.space = space;
@@ -50,8 +50,8 @@ public class Zombie {
 		intervalStep = 0;
 		this.coinAsset = coin;
 		
-		Parameters params = RunEnvironment.getInstance().getParameters();
-		maxStoriLimit = (Integer) params.getValue("max_stori");
+//		Parameters params = RunEnvironment.getInstance().getParameters();
+//		maxStoriLimit = (Integer) params.getValue("max_stori");
 	}
 
 	@ScheduledMethod(start = 1, interval = 1)
@@ -69,11 +69,11 @@ public class Zombie {
 				e.printStackTrace();
 			}
 			
-			System.out.println("static evn : " + JZombiesBuilder.saledToken);
-			if(JZombiesBuilder.saledToken > 0) {
+//			System.out.println("static evn : " + JZombiesBuilder.LiquidToken);
+			if(JZombiesBuilder.LiquidToken > 0) {
 				randomCoin = RandomHelper.nextIntFromTo(1, 5);
-				if(randomCoin <= JZombiesBuilder.saledToken) {
-					JZombiesBuilder.saledToken -= randomCoin;
+				if(randomCoin <= JZombiesBuilder.LiquidToken) {
+					JZombiesBuilder.LiquidToken -= randomCoin;
 					this.coinAsset = randomCoin;
 					System.out.println("randomCoin : " + randomCoin);
 				}					
@@ -100,17 +100,15 @@ public class Zombie {
 			Network<Object> net = (Network<Object>)contextTmp.getProjection("staking network");
 			
 			StoriBoard storiTmp = null;	
-			
-			
-			
+						
 //			System.out.println("스토리갯수 : " + storiIter.size());
 			
-			if(storiIter.size() > 19 && storiIter.size() <= 20) {				
-			
-				for (int n=0; n < storiIter.size(); n++) {
+//			if(storiIter.size() > 19 && storiIter.size() <= 20) {				
+//			
+//				for (int n=0; n < storiIter.size(); n++) {
 //					System.out.println(" text : "+ ((StoriBoard)storiIter.get(n)).pi.getTotalStaking());
-				}
-			}
+//				}
+//			}
 			
 			
 			if(storiIter.size() > 3) { // 전체적으로 최소 3개 이상의 스토리가 만들어지면 이 방식으로 투자자 움직임
@@ -221,12 +219,9 @@ public class Zombie {
 //					System.out.println(" :: " + cell.getClass().getName());
 //					System.out.println(" :: " + cell.getClass().getName().compareTo("jzombies.Human"));
 					if(cell.getClass().getName().compareTo("jzombies.Human")==0) {
-						((Human)cell).setEnergy(this.coinAsset);
-						System.out.println("777 : " + ((Human)cell).getEnergy());						
+						((Human)cell).setEnergy(this.coinAsset);				
 					}						
 				}
-							
-//				System.out.println("Staking Asset : " + obj.pi.getTotalStaking());
 			}			
 		}
 	}
